@@ -1,6 +1,6 @@
+import librosa
 import numpy as np
 import opusenc
-import librosa
 
 sample_rate = 48000
 channels = 1
