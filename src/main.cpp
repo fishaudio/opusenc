@@ -18,10 +18,11 @@ private:
     OggOpusEnc *encoder;
     OggOpusComments *comments;
     int channels;
+    bool has_written;
 
 public:
     OpusBufferedEncoder(int sample_rate, int channels, int bitrate = OPUS_AUTO, int signal_type = 0, int encoder_complexity = 10, int decision_delay = 0)
-        : encoder(nullptr), comments(nullptr), channels(channels)
+        : encoder(nullptr), comments(nullptr), channels(channels), has_written(false)
     {
         if (channels < 1 || channels > 8)
         {
@@ -97,6 +98,11 @@ public:
             throw py::value_error("Buffer must have shape [samples, channels] and match the number of channels specified in the constructor.");
         }
 
+        if (buffer.shape(0) == 0)
+        {
+            return py::bytes();
+        }
+
         const int16_t *data = buffer.data();
         int samples = buffer.shape(0);
 
@@ -106,6 +112,8 @@ public:
         {
             throw py::value_error("Encoding failed");
         }
+
+        has_written = true;
 
         unsigned char *packet;
         opus_int32 len;
@@ -119,7 +127,16 @@ public:
 
     py::bytes flush()
     {
-        ope_encoder_drain(encoder);
+        if (!has_written)
+        {
+            throw py::value_error("You must call write() at least once before calling flush().");
+        }
+
+        if (ope_encoder_drain(encoder) != OPE_OK)
+        {
+            throw py::value_error("Draining failed, you can't call flush() more than once.");
+        }
+
         opus_int32 len;
         unsigned char *packet;
         std::vector<unsigned char> encoded_data;
