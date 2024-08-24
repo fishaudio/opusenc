@@ -1,9 +1,26 @@
-# opusenc
+# OPUSENC
 
-For any system <= Ubuntu 22.04, you need to install libopusenc-dev manually, run `install_opus.sh`
+## Requirements
+- libopus-dev
+- libopusfile-dev
+- libopusenc-dev
 
-For Ubuntu 24.04, you can install libopusenc-dev via apt:
+### Ubuntu ≤ 22.04
+```bash
+sudo apt install libopus-dev libopusfile-dev
+bash install_opus.sh # install libopusenc-dev
+```
+
+### Ubuntu 24.04
 
 ```bash
 sudo apt install libopus-dev libopusfile-dev libopusenc-dev
 ```
+
+## Installation
+```bash
+pip install git+https://github.com/fishaudio/opusenc.git
+```
+
+## Usage
+Check `tests/test.py` for more details.
