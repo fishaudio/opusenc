@@ -11,9 +11,10 @@ ext_modules = [
         define_macros=[("VERSION_INFO", __version__)],
         include_dirs=[
             "/usr/include/opus",
-            "/usr/include/opusfile",
             "/usr/include/opusenc",
         ],
+        library_dirs=["/usr/lib/x86_64-linux-gnu"],
+        libraries=["opus", "opusenc"],
     ),
 ]
 

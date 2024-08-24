@@ -1,0 +1,26 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Add requirements
+      run: apt install -y libopus-dev libopusfile-dev libopusenc-dev && python -m pip install --upgrade wheel setuptools
+    - name: Build and install
+      run: pip install --verbose .
+    - name: Test
+      run: python tests/test.py
