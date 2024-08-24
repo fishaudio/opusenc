@@ -134,7 +134,6 @@ public:
     {
         if (encoder)
         {
-            ope_encoder_drain(encoder);
             ope_encoder_destroy(encoder);
             encoder = nullptr;
         }
