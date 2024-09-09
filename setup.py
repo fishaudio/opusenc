@@ -14,7 +14,7 @@ ext_modules = [
             "/usr/include/opusenc",
         ],
         library_dirs=["/usr/lib/x86_64-linux-gnu"],
-        libraries=["opus", "opusenc"],
+        libraries=["opus", "libopusenc"],
     ),
 ]
 
