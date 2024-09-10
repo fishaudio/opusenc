@@ -113,13 +113,12 @@ public:
             throw py::value_error("Encoding failed");
         }
 
-        has_written = true;
-
         unsigned char *packet;
         opus_int32 len;
         while (ope_encoder_get_page(encoder, &packet, &len, 1) != 0)
         {
             encoded_data.insert(encoded_data.end(), packet, packet + len);
+            has_written = true;
         }
 
         return py::bytes(reinterpret_cast<char *>(encoded_data.data()), encoded_data.size());
